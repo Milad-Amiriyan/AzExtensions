@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smrt-app
+  template:
+    metadata:
+      labels:
+        app: smrt-app
+    spec:
+      containers:
+      - name: my-smrt-image
+        image: nginx
+      ports:
+      - containerPort: 80
+
+
+# With Persistant Disk
+
+  1 - Managed Disk
+
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: app-deployment
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: smrt-app
+      template:
+        metadata:
+          labels:
+            app: smrt-app
+        spec:
+          containers:
+          - name: my-smrt-image
+            volumeMounts:
+            - name: storage
+              mountPath: /mnt/disk1
+            image: nginx
+            ports:
+            - containerPort: 80
+          volumes:
+            - name: storage
+              azureDisk:
+                kind: Managed
+                diskName: smrtclusterdisk
+                diskURI: {The Output of KubernetesCreate.sh}
+
+  2 - File Shares
+
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: app-deployment
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: smrt-app
+      template:
+        metadata:
+          labels:
+            app: smrt-app
+        spec:
+          containers:
+          - name: my-smrt-image
+            volumeMounts:
+            - name: storage
+              mountPath: /mnt/share
+            image: nginx
+            ports:
+            - containerPort: 80
+          volumes:
+            - name: storage
+              azureFile:
+                secretName: azure-secret
+                shareName: {File Share Name that Should be Existing}
+                readOnly: false

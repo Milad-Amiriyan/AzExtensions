@@ -1,0 +1,4 @@
+{
+	"fileUris": ["https://raw.githubusercontent.com/Milad-Amiriyan/AzExtensions/main/nginx.sh"],
+	"commandToExecute": "./nginx.sh"
+}

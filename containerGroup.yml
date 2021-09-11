@@ -1,0 +1,25 @@
+apiversion: 2019-12-01
+location: canadaeast
+name: testGroup
+properties:
+  containers:
+  - name: nginxtest
+    properties:
+      image: nginx
+      resources:
+        requests:
+          cpu: 1
+          memoryInGb: 1
+      ports:
+      - port: 80
+  osType: Linux
+  ipAddress:
+    type: Public
+    ports:
+    - protocol: tcp
+      port: 80
+type: Microsoft.ContainerInstance/containerGroups
+
+
+
+$ az container create -g Linux --file containerGroup.yml
